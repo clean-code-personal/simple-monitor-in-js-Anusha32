@@ -1,7 +1,7 @@
 const {expect} = require('chai');
 const {rangeCheck} = require('./rangeCheck');
 
-function batteryIsOk(temperature, soc, charge_rate) {
+function batteryIsOk(temperature, soc, charge_rate,tolerance) {
 
     let isbatteryOk = true;
     temp = rangeCheck(temperature, 0, 45);
