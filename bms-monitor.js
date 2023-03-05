@@ -10,7 +10,7 @@ function batteryIsOk(temperature, soc, charge_rate,tolerance) {
     ];
     let isbatteryOk = values.every(rangeCheck);
 
-    function rangeCheck(item , index, array){
+    function rangeCheck(item){
        if (item.input < item.min || item.input > item.max){
         return false;
        }
