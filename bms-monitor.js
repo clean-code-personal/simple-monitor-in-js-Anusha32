@@ -1,16 +1,25 @@
 const {expect} = require('chai');
-const {rangeCheck} = require('./rangeCheck');
 
 function batteryIsOk(temperature, soc, charge_rate,tolerance) {
 
-    let isbatteryOk = true;
-    temp = rangeCheck(temperature, 0, 45);
-    stateOfCharge = rangeCheck(soc, 20, 80);
-    chargeRate = rangeCheck(charge_rate,0,0.8);
 
-    if(temp == false || stateOfCharge == false || chargeRate == false){
-        isbatteryOk = false;
+    const values = [
+        {name:"temperature", input: temperature, min:0, max:45},
+        {name:"stateOfCharge", input: soc, min:20, max:80},
+        {name:"chargeRate", input:charge_rate, min:0, max:0.8}
+    ];
+    let isbatteryOk = values.every(rangeCheck);
+
+    function rangeCheck(item , index, array){
+       if (item.input < item.min || item.input > item.max){
+        return false;
+       }
+       else{
+        return true;
+       }
     }
+
+
 
    return isbatteryOk;
 }
