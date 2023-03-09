@@ -1,18 +1,29 @@
-const {expect} = require('chai');
+const { expect } = require("chai");
+const lang = require("./changeLanguage");
+const { celciusTemp } = require("./celciusTemp");
 
-function batteryIsOk(temperature, soc, charge_rate) {
-    if (temperature < 0 || temperature > 45) {
-        console.log('Temperature is out of range!');
-        return false;
-    } else if (soc < 20 || soc > 80) {
-        console.log('State of Charge is out of range!')
-        return false;
-    } else if (charge_rate > 0.8) {
-        console.log('Charge rate is out of range!');
-        return false;
+function batteryIsOk(temperature, soc, charge_rate, tempUnit) {
+  temperature = celciusTemp(temperature, tempUnit);
+  const values = [
+    { name: "temperature", input: temperature, min: 0, max: 45 },
+    { name: "stateOfCharge", input: soc, min: 20, max: 80 },
+    { name: "chargeRate", input: charge_rate, min: 0, max: 0.8 },
+  ];
+
+  temperature = lang.temperature;
+  soc = lang.soc;
+  chargeRate = lang.chargeRate;
+
+  console.log(`${temperature}, ${soc}, ${chargeRate}`);
+  let isbatteryOk = values.every((item) => {
+    if (item.input < item.min || item.input > item.max) {
+      return false;
+    } else {
+      return true;
     }
-    return true;
+  });
+
+  return isbatteryOk;
 }
 
-expect(batteryIsOk(25, 70, 0.7)).to.be.true;
-expect(batteryIsOk(50, 85, 0)).to.be.false;
+module.exports = { batteryIsOk };
